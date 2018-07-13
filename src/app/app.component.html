@@ -1,19 +1,15 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="wrap">
   <mat-toolbar [color]="'primary'">
-    <a mat-button (click)="toHome()">Bikestagram</a>
+    <a mat-button [routerLink]="'/home'" routerLinkActive="active">Bikestagram</a>
     <span class="example-fill-remaining-space"></span>
-    <a *ngIf="isLoggedIn && getUserDetail" mat-button (click)="toProfile()">
-      <span>{{ getUserDetail }}</span>
+    <a *ngIf="(user | async)?.uid" mat-button [routerLink]="'/profile'" routerLinkActive="active">
+      <span *ngIf="userDisplayName">{{ userDisplayName }}</span>
+      <span *ngIf="!userDisplayName">Profile</span>
       <div class="mat-button-ripple mat-ripple" mat-ripple ipple></div>
       <div class="mat-button-focus-overlay"></div>
     </a>
-    <a *ngIf="isLoggedIn && !getUserDetail" mat-button (click)="toProfile()">
-      <span>Profile</span>
-      <div class="mat-button-ripple mat-ripple" mat-ripple></div>
-      <div class="mat-button-focus-overlay"></div>
-    </a>
-    <button *ngIf="isLoggedIn" mat-button (click)="logout()">Logout</button>
+    <button *ngIf="(user | async)?.uid" mat-button (click)="logout()">Logout</button>
   </mat-toolbar>
   <div class="basic-container">
     <router-outlet></router-outlet>

@@ -19,6 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { routing } from './app-routing.module';
@@ -56,6 +57,7 @@ const firebaseConfig = {
     MatButtonModule,
     MatTabsModule,
     MatGridListModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     routing

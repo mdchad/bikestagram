@@ -19,16 +19,9 @@ export class LoginComponent  {
 
   private onSignUp() {
     this.authService.signUp(this.user.email, this.user.password);
-    this.af.doc('/users').set(this.user);
   }
 
   private onLogin() {
     this.authService.login(this.user.email, this.user.password);
-  }
-
-  private uploadPic(event) {
-    const file = event.target.files[0];
-    const filePath = 'name-your-file-path-here';
-    const task = this.as.upload(filePath, file);
   }
 }
