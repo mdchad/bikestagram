@@ -27,7 +27,8 @@ export class HomeComponent {
     capacity: null,
     caption: '',
     photoUrl: '',
-    userName: ''
+    userName: '',
+    profilePic: ''
   };
   constructor(private db: AngularFirestore,
               private af: AngularFireAuth,
@@ -35,7 +36,6 @@ export class HomeComponent {
               private authService: AuthService,
               public dialog: MatDialog) {
     this.userProfilePic = this.af.auth.currentUser.photoURL;
-    console.log(this.userProfilePic);
     this.route.paramMap.subscribe(val => {
       if (this.route.routeConfig.path === 'home') {
         this.bikesCol = this.db.collection('bikes');
@@ -70,7 +70,6 @@ export class HomeComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       this.bikesCol.add(result)
         .then(bike => console.log(bike))
         .catch(err => console.error('Fail to submit post', err));
@@ -125,6 +124,7 @@ export class AddPostComponent {
         const s = fileRef.getDownloadURL();
         s.subscribe(url => {
           this.bike.photoUrl = url;
+          this.bike.profilePic = this.authService.getCurrentUser.photoURL;
         });
       })
     ).subscribe();

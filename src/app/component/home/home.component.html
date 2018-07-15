@@ -31,7 +31,7 @@
   <ul *ngFor="let bike of group.value">
     <mat-card class="example-card">
       <mat-card-header>
-        <div mat-card-avatar><img class="header-image" [src]="userProfilePic" alt=""></div>
+        <div mat-card-avatar><img class="header-image" [src]="bike.profilePic" alt=""></div>
         <mat-card-title>{{bike.userName}}</mat-card-title>
       </mat-card-header>
       <img mat-card-image

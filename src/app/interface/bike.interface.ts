@@ -4,4 +4,5 @@ export default interface Bike {
   caption: string;
   photoUrl: string;
   userName: string;
+  profilePic: string;
 }
