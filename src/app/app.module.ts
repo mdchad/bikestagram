@@ -11,7 +11,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 // Component
 import { LoginComponent } from './component/login/login.component';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './component/home/home.component';
+import { AddPostComponent, HomeComponent } from './component/home/home.component';
 // Angular material
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { routing } from './app-routing.module';
@@ -42,7 +43,12 @@ const firebaseConfig = {
     AppComponent,
     LoginComponent,
     HomeComponent,
-    UserComponent
+    UserComponent,
+    AddPostComponent
+  ],
+  entryComponents: [
+    AddPostComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +63,7 @@ const firebaseConfig = {
     MatButtonModule,
     MatTabsModule,
     MatGridListModule,
+    MatDialogModule,
     MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,

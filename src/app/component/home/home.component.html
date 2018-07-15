@@ -1,4 +1,5 @@
 <input type="file" (change)="uploadFile($event)">
+<button mat-raised-button (click)="openDialog()">Open</button>
 <div *ngIf="userBike.length === 0">
   <mat-progress-spinner [mode]="'indeterminate'"
                         [color]="'primary'"
@@ -30,3 +31,4 @@
     </mat-card>
   </ul>
 </div>
+<!--<app-add-post #addDialog></app-add-post>-->

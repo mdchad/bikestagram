@@ -27,6 +27,7 @@
     "firebase": "^5.2.0",
     "mustard-ui": "0.0.7",
     "rxjs": "^6.0.0",
+    "uuid": "^3.3.2",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
