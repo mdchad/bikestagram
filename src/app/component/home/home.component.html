@@ -1,5 +1,26 @@
-<input type="file" (change)="uploadFile($event)">
-<button mat-raised-button (click)="openDialog()">Open</button>
+<mat-button-toggle-group #group="matButtonToggleGroup">
+  <mat-button-toggle [value]="get100cc">
+    1000cc
+  </mat-button-toggle>
+  <mat-button-toggle [value]="get400cc">
+    400cc
+  </mat-button-toggle>
+  <mat-button-toggle [value]="get200cc">
+    200cc
+  </mat-button-toggle>
+  <mat-button-toggle [checked]="true"
+                     [value]="getDefault">
+    ALL
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<!--<div class="example-selected-value">Selected value: {{group.value}}</div>-->
+
+<button class="add-button"
+        matTooltip="Submit a post"
+        mat-fab
+        [color]="'primary'" (click)="openDialog()">
+  <mat-icon>add</mat-icon>
+</button>
 <div *ngIf="userBike.length === 0">
   <mat-progress-spinner [mode]="'indeterminate'"
                         [color]="'primary'"
@@ -7,21 +28,21 @@
   </mat-progress-spinner>
 </div>
 <div *ngIf="userBike.length > 0">
-  <ul *ngFor="let bike of userBike">
+  <ul *ngFor="let bike of group.value">
     <mat-card class="example-card">
       <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{bike.name}}</mat-card-title>
-        <mat-card-subtitle>{{ bike.capacity }}</mat-card-subtitle>
+        <div mat-card-avatar><img class="header-image" [src]="userProfilePic" alt=""></div>
+        <mat-card-title>{{bike.userName}}</mat-card-title>
       </mat-card-header>
-      <img mat-card-image src="http://via.placeholder.com/350x250" alt="Photo of a Shiba Inu">
+      <img mat-card-image
+           height="500"
+           [src]="bike.photoUrl"
+           alt="Photo of a bike">
       <mat-card-content>
         <h4>{{bike.name}}</h4>
-        <mat-card-subtitle>{{ bike.capacity }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ bike.capacity }}cc</mat-card-subtitle>
         <p>
-          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-          A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-          bred for hunting.
+          {{ bike.caption}}
         </p>
       </mat-card-content>
       <mat-card-actions>

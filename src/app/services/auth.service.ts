@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFirestore} from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase/app';
@@ -11,6 +11,7 @@ export class AuthService {
 
   constructor(private auth: AngularFireAuth,
               private af: AngularFirestore,
+              private activeRoute: ActivatedRoute,
               private router: Router) {
     this.auth.auth.onAuthStateChanged((user) => {
       if (user) {

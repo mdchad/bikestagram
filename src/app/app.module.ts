@@ -21,6 +21,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { routing } from './app-routing.module';
@@ -57,10 +64,16 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
+    MatProgressBarModule,
+    MatIconModule,
     MatToolbarModule,
     MatInputModule,
+    MatSnackBarModule,
     MatCardModule,
     MatButtonModule,
+    MatChipsModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
     MatTabsModule,
     MatGridListModule,
     MatDialogModule,

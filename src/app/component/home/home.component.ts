@@ -9,6 +9,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
 import { finalize } from 'rxjs/internal/operators';
 import * as uuid from 'uuid/v4';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -19,22 +20,27 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 export class HomeComponent {
   bikesCol: AngularFirestoreCollection<Bike>;
   bikes: Observable<Bike[]>;
-  user: Observable<firebase.User>;
+  userProfilePic: string;
   userBike: Bike[] = [];
-  name: string = null;
-  uploadPercentage: Observable<number>;
-  // @ViewChild('addDialog') addDialog: AddPostComponent;
-  addDialog: AddPostComponent;
-
+  bike: Bike = {
+    name: '',
+    capacity: null,
+    caption: '',
+    photoUrl: '',
+    userName: ''
+  };
   constructor(private db: AngularFirestore,
               private af: AngularFireAuth,
               private route: ActivatedRoute,
-              public dialog: MatDialog,
-              private storage: AngularFireStorage) {
-    this.user = this.af.authState;
-    route.params.subscribe(val => {
-      this.bikesCol = this.db.collection('bikes');
-      this.bikes = this.bikesCol.valueChanges();
+              private authService: AuthService,
+              public dialog: MatDialog) {
+    this.userProfilePic = this.af.auth.currentUser.photoURL;
+    console.log(this.userProfilePic);
+    this.route.paramMap.subscribe(val => {
+      if (this.route.routeConfig.path === 'home') {
+        this.bikesCol = this.db.collection('bikes');
+        this.bikes = this.bikesCol.valueChanges();
+      }
     }, err => {
     });
 
@@ -51,34 +57,38 @@ export class HomeComponent {
     );
   }
 
-  private uploadFile(event) {
-    const file = event.target.files[0];
-    const generateUuid = uuid();
-    const filePath = generateUuid.slice(0, 13);
-    const fileRef = this.storage.ref(filePath);
-    const task = this.storage.upload(filePath, file);
-
-    // console.log(task.percentageChanges().subscribe(ref => console.log(ref)));
-
-    task.snapshotChanges().pipe(
-      finalize(() => {
-        const s = fileRef.getDownloadURL();
-        console.log(s.subscribe(r => console.log(r)));
-      })
-    ).subscribe();
-  }
-
   openDialog(): void {
     const dialogRef = this.dialog.open(AddPostComponent, {
       width: '1050px',
-      data: {name: this.name }
+      data: {
+        name: this.bike.name,
+        capacity: this.bike.capacity,
+        caption: this.bike.caption,
+        photoUrl: this.bike.photoUrl,
+        userName: this.bike.userName
+      }
     });
-
-    console.log(dialogRef);
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.bikesCol.add(result)
+        .then(bike => console.log(bike))
+        .catch(err => console.error('Fail to submit post', err));
       console.log('The dialog was closed');
     });
+  }
+
+  public get get100cc()  {
+    return this.userBike.filter(bike => bike.capacity > 400);
+  }
+  public get get400cc()  {
+    return this.userBike.filter(bike => bike.capacity < 400 && bike.capacity > 200);
+  }
+  public get get200cc()  {
+    return this.userBike.filter(bike => bike.capacity < 200);
+  }
+  public get getDefault()  {
+    return this.userBike;
   }
 }
 
@@ -88,12 +98,42 @@ export class HomeComponent {
 })
 
 export class AddPostComponent {
-  constructor(
-    public dialogRef: MatDialogRef<AddPostComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+  uploadPercentage: number = null;
+
+  constructor(private storage: AngularFireStorage,
+              private authService: AuthService,
+              public dialogRef: MatDialogRef<AddPostComponent>,
+              @Inject(MAT_DIALOG_DATA) public bike: Bike) {
+    this.bike.userName = this.authService.getCurrentUser.displayName;
+  }
+
+  private uploadFile(event) {
+    const file = event.target.files[0];
+    const generateUuid = uuid();
+    const filePath = generateUuid.slice(0, 13);
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+
+    task.percentageChanges().subscribe(percentage => {
+      this.uploadPercentage = percentage;
+    }, err => {
+      console.error(err);
+    });
+
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        const s = fileRef.getDownloadURL();
+        s.subscribe(url => {
+          this.bike.photoUrl = url;
+        });
+      })
+    ).subscribe();
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  // private submitPost() {
+  // }
 }

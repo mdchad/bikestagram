@@ -20,8 +20,17 @@
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="2">
+        <input name="photo"
+               type="file"
+               (change)="uploadFile($event)">
+        <mat-progress-bar *ngIf="uploadPercentage === 0" mode="indeterminate"></mat-progress-bar>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2">
         <button type="submit" mat-raised-button [color]="'primary'">Update</button>
       </mat-grid-tile>
     </mat-grid-list>
   </form>
+  <div>
+    <p>Successfully Updated</p>
+  </div>
 </mat-card>
